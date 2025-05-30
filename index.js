@@ -55,11 +55,24 @@ async function run() {
 
     // application collection  Api
 
+    app.get('/application', async (req, res) => {
+      const email = req.query.email;
+      const query = { email: email };
+      const result = await applicationCollection.find(query).toArray();
+      res.send(result)
+    })
+
     app.post('/application', async (req, res) => {
       const application = req.body;
       const result = await applicationCollection.insertOne(application);
+
+      
+
+
+
       res.send(result)
     })
+
 
 
     // Connect the client to the server	(optional starting in v4.7)
