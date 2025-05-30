@@ -31,6 +31,13 @@ async function run() {
       .collection("Job_Chircular");
     
     
+    const applicationCollection = client
+      .db("Job_Portal_db")
+      .collection("Applications");
+    
+    
+    
+    
     app.get('/jobs', async (req, res) => {
       const course = jobCollection.find();
       const result = await course.toArray();
@@ -43,6 +50,14 @@ async function run() {
       
       const query = { _id: new ObjectId(id) };
       const result = await jobCollection.findOne(query);
+      res.send(result)
+    })
+
+    // application collection  Api
+
+    app.post('/application', async (req, res) => {
+      const application = req.body;
+      const result = await applicationCollection.insertOne(application);
       res.send(result)
     })
 
