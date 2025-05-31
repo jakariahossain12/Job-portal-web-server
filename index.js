@@ -73,6 +73,19 @@ async function run() {
       res.send(result);
     });
 
+    app.patch('/application/:id', async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const upDateDog = {
+        $set: {
+          stats: req.body.stats,
+        }
+      }
+      const result = await applicationCollection.updateOne(filter, upDateDog);
+      res.send(result)
+
+    })
+
     app.get('/application', async (req, res) => {
       const email = req.query.email;
       const query = { email: email };
