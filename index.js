@@ -55,6 +55,18 @@ async function run() {
       res.send(result)
     })
 
+    app.get('/jobs/applicant', async (req, res) => {
+      const email = req.query.email;
+      const query = { hr_email: email };
+      const result = await jobCollection.find(query).toArray();
+      for (const job of result) {
+        const applicationQuery = { job_id: job._id.toString() };
+        const application_count = await applicationCollection.countDocuments(applicationQuery);
+        job.application_count = application_count;
+      }
+      res.send(result)
+    })
+
 
     app.get('/jobs/:id', async (req, res) => {
       const id = req.params.id;
