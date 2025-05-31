@@ -59,17 +59,22 @@ async function run() {
       const email = req.query.email;
       const query = { email: email };
       const result = await applicationCollection.find(query).toArray();
-      res.send(result)
+      // bad way
+      for (const application of result) {
+        const jobId = application.job_id;
+        const query = { _id: new ObjectId(jobId) };
+        const job = await jobCollection.findOne(query);
+        application.company = job.company;
+        application.title = job.title;
+        application.company_logo = job.company_logo;
+        application.location = job.location;
+      }
+      res.send(result);
     })
 
     app.post('/application', async (req, res) => {
       const application = req.body;
       const result = await applicationCollection.insertOne(application);
-
-      
-
-
-
       res.send(result)
     })
 
