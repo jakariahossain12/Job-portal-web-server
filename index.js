@@ -66,6 +66,13 @@ async function run() {
 
     // application collection  Api
 
+
+    app.post("/application", async (req, res) => {
+      const application = req.body;
+      const result = await applicationCollection.insertOne(application);
+      res.send(result);
+    });
+
     app.get('/application', async (req, res) => {
       const email = req.query.email;
       const query = { email: email };
@@ -83,11 +90,16 @@ async function run() {
       res.send(result);
     })
 
-    app.post('/application', async (req, res) => {
-      const application = req.body;
-      const result = await applicationCollection.insertOne(application);
+    app.get('/applicant/job/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { job_id:id };
+      const result = await applicationCollection.find(query).toArray();
       res.send(result)
-    })
+
+   })
+
+
+
 
 
 
